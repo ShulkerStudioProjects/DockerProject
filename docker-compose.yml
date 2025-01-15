@@ -1,0 +1,11 @@
+services:
+  pocketmine:
+    build:
+      context: .
+    container_name: pocketmine-server
+    ports:
+      - "19132:19132/udp"
+    volumes:
+      - ./data/worlds:/worlds
+      - ./data/players:/players
+      - ./crashs:/crashdumps
