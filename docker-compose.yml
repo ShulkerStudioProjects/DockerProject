@@ -9,3 +9,36 @@ services:
       - ./data/worlds:/worlds
       - ./data/players:/players
       - ./crashs:/crashdumps
+      - ./server/plugins:/plugins
+    environment:
+      PM_DB_HOST: mysql
+      PM_DB_PORT: 3306
+      PM_DB_USER: pocketmine
+      PM_DB_PASSWORD: pocketmine_password
+      PM_DB_NAME: pocketmine
+      PM_MODE: "DEV" # DEV | PROD
+    depends_on:
+      mysql:
+        condition: service_started
+    restart: always
+    networks:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: pocketmine
+      MYSQL_USER: pocketmine
+      MYSQL_PASSWORD: pocketmine_password
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    networks:
+      - app
+
+networks:
+  app:
